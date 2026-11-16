@@ -1,17 +1,19 @@
 ---
-title: 'DuckDB入門：CSV と JSON を取り込まずに SQL で集計し、Parquet で軽く残す（Shift_JIS の読み方も）'
+title: DuckDB入門：CSV と JSON を取り込まずに SQL で集計し、Parquet で軽く残す（Shift_JIS の読み方も）
 tags:
   - duckdb
-  - sql
-  - csv
-  - parquet
-  - json
+  - SQL
+  - CSV
+  - Parquet
+  - JSON
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-17T06:10:11+09:00'
+id: 67ee09aaa8748d284171
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 月ごとに増える売上の CSV を Excel に貼り合わせたり、集計のたびに使い捨てのスクリプトを書いたりしていないでしょうか。
