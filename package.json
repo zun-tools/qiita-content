@@ -1,0 +1,24 @@
+{
+  "name": "qiita-content",
+  "version": "1.0.0",
+  "description": "zundamon-tools の Qiita 記事（qiita-cli で投稿）",
+  "scripts": {
+    "preview": "qiita preview",
+    "publish": "qiita publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zun-tools/qiita-content.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/zun-tools/qiita-content/issues"
+  },
+  "homepage": "https://github.com/zun-tools/qiita-content#readme",
+  "devDependencies": {
+    "@qiita/qiita-cli": "^1.13.0"
+  },
+  "private": true
+}
