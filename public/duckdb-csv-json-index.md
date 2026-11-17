@@ -11,7 +11,7 @@ updated_at: ''
 id: null
 organization_url_name: null
 slide: false
-ignorePublish: true
+ignorePublish: false
 ---
 
 DuckDB で手元の CSV と JSON を、表を作らず取り込みもせずに SQL で扱う方法を、課題ごとに3本の記事で紹介します。どれも同じサンプルのスクリプトで作ったデータで、コマンドと出力をそのまま載せています。
