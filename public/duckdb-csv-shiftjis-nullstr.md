@@ -1,7 +1,7 @@
 ---
-title: DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）
+title: 'DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - SQL
   - 文字コード
@@ -12,8 +12,6 @@ id: e42c799a5d89996f1ce4
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読めるようになります。数字の列に「N/A」や「未定」が混じって `sum` が通らない CSV も、前処理のスクリプト無しに SQL だけで集計できます。
@@ -26,7 +24,6 @@ DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読�
 - macOS（Apple シリコン）
 - 確認日は 2026-11-14。Linux と Windows では試していません
 - サンプルデータの生成に Python 3（標準ライブラリだけ）
-- 数字はすべて、下のサンプルデータで1回ずつ実行した値です
 
 ## 完成形
 
@@ -60,7 +57,7 @@ python3 ../duckdb-sample/gen_sample.py
 duckdb
 ```
 
-Shift_JIS の `sales_sjis.csv`、崩れた列を持つ `sales_corrupted.csv` などができます。最後の `duckdb` で対話の画面に入り、プロンプトが `D` になります。以降の SQL はこの中で打ちます。ファイル名を付けずに開いたので、これはメモリ上の一時的なデータベースで、閉じると消えます。作った表を残したいときは `duckdb ファイル名.db` で開くと、その1ファイルに残ります。
+Shift_JIS の `sales_sjis.csv`、崩れた列を持つ `sales_corrupted.csv` などができます。最後の `duckdb` で対話の画面に入り、プロンプトが `D` になります。以降の SQL はこの中で打ちます。
 
 ## 2. Shift_JIS の CSV を読む
 
@@ -162,15 +159,7 @@ FROM read_csv('sales_corrupted.csv', nullstr = ['N/A', '未定']);
 
 ## DuckDB について
 
-DuckDB は分析用のデータベースです。サーバーを持たず、`duckdb` と打ったそのプロセスの中で動きます。公式の「Why DuckDB」はこう書いています。
-
-> there is no DBMS server software to install, update, and maintain.
-> （インストールし、更新し、保守するデータベースのサーバーのソフトが無い）
-
-`FROM` の後ろに CSV・JSON・Parquet のファイル名を書けば、表の定義も取り込みの手順も無しに読めます。オランダの研究所 CWI の Mark Raasveldt と Hannes Mühleisen が作った、MIT ライセンスの OSS です。公式は、SQLite の「入れるのが簡単で、アプリの中で動く」考えを分析向けに取り入れた、と説明しています。2026年には開発会社の DuckLabs が AWS に加わりました。FAQ によれば、知財は非営利の DuckDB Foundation に残り、OSS のまま続きます。v2.0.0 は 2026年10月21日に公開された長期サポート版です。
-
-> DuckDB 2.0 is a long-term support (LTS) release with support until at least October 2027.
-> （DuckDB 2.0 は長期サポート（LTS）版で、少なくとも2027年10月までサポートされる）
+DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの中で動く分析用のデータベースです。`FROM` の後ろに CSV・JSON・Parquet のファイル名を書けば、表の定義も取り込みの手順も無しに読めます。
 
 ## まとめ
 
@@ -183,3 +172,6 @@ DuckDB は分析用のデータベースです。サーバーを持たず、`duc
 - [CSV の読み込み（encoding・nullstr・columns）](https://duckdb.org/docs/2.0/data/csv/overview.html)
 - [encodings 拡張](https://duckdb.org/docs/2.0/core_extensions/encodings.html)
 - [サンプル: zun-tools/duckdb-sample（gen_sample.py・queries.sql）](https://github.com/zun-tools/duckdb-sample)
+
+---
+
