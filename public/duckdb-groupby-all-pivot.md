@@ -6,7 +6,7 @@ tags:
   - CSV
   - Parquet
 private: true
-updated_at: '2026-11-17T09:44:59+09:00'
+updated_at: '2026-11-18T06:27:43+09:00'
 id: 595748af201e33f3973f
 organization_url_name: null
 slide: false
