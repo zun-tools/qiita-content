@@ -1,7 +1,7 @@
 ---
-title: DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）
+title: 'DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - SQL
   - 文字コード
@@ -12,8 +12,6 @@ id: e42c799a5d89996f1ce4
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読めるようになります。数字の列に「N/A」や「未定」が混じって `sum` が通らない CSV も、前処理のスクリプト無しに SQL だけで集計できます。
@@ -177,3 +175,4 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ---
 
+シリーズの他の記事: https://qiita.com/zundamon-tools/private/3dba4f8a2dfca9ddee79
