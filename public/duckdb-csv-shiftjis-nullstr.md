@@ -1,7 +1,7 @@
 ---
-title: DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）
+title: 'DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - SQL
   - 文字コード
@@ -12,8 +12,6 @@ id: e42c799a5d89996f1ce4
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読めるようになります。数字の列に「N/A」や「未定」が混じって `sum` が通らない CSV も、前処理のスクリプト無しに SQL だけで集計できます。
@@ -107,16 +105,11 @@ INSTALL encodings; LOAD encodings;
 FROM read_csv('sales_sjis.csv', encoding = 'shift_jis');
 ```
 
-```text
-┌──────────┬────────────────────────────┬─────────┬───────┐
-│ 注文番号 │           商品名           │  区分   │ 金額  │
-│ varchar  │          varchar           │ varchar │ int64 │
-├──────────┼────────────────────────────┼─────────┼───────┤
-│ S001     │ 日本語メカニカルキーボード │ 通販    │ 15000 │
-│ S002     │ 静音マウスパッド           │ 店舗    │  2500 │
-│ S003     │ 有線LANアダプタ            │ 法人    │  3800 │
-└──────────┴────────────────────────────┴─────────┴───────┘
-```
+| 注文番号<br>varchar | 商品名<br>varchar | 区分<br>varchar | 金額<br>int64 |
+|---|---|---|--:|
+| S001 | 日本語メカニカルキーボード | 通販 | 15000 |
+| S002 | 静音マウスパッド | 店舗 | 2500 |
+| S003 | 有線LANアダプタ | 法人 | 3800 |
 
 列名も中身も日本語で読め、金額は整数の `int64` になっています。`encodings` は公式の拡張です。`INSTALL` でダウンロードし、`LOAD` でそのセッションに読み込みます。初回はネットにつながっている必要がありますが、登録は要りません。
 
