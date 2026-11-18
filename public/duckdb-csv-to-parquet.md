@@ -6,7 +6,7 @@ tags:
   - Parquet
   - SQL
 private: true
-updated_at: '2026-11-18T13:02:53+09:00'
+updated_at: '2026-11-18T13:03:22+09:00'
 id: c1518d2d65dae8f7fe94
 organization_url_name: null
 slide: false
