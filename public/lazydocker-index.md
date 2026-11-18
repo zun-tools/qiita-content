@@ -6,7 +6,7 @@ tags:
   - docker-compose
   - tui
 private: true
-updated_at: '2026-11-19T07:27:54+09:00'
+updated_at: '2026-11-19T07:28:21+09:00'
 id: 975c61779740d6113fd7
 organization_url_name: null
 slide: false
