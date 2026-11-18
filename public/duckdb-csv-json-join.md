@@ -1,18 +1,16 @@
 ---
-title: DuckDB で CSV と JSON を取り込まずに SQL で読み、JOIN する
+title: 'DuckDB で CSV と JSON を取り込まずに SQL で読み、JOIN する'
 tags:
-  - duckdb
+  - DuckDB
   - SQL
   - CSV
   - JSON
-private: true
+private: false
 updated_at: '2026-11-18T14:10:02+09:00'
 id: dd2c93034ba11461eb7e
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB を使うと、手元の CSV と JSON を `CREATE TABLE` も取り込みもせずに、`FROM` にファイル名を書くだけで SQL で読めます。月ごとに分かれた CSV 3本（計 6,000 行）と商品一覧の JSON を、1本の SQL でつないで集計するところまで進めます。
@@ -190,4 +188,4 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ---
 
-シリーズの他の記事: https://qiita.com/zundamon-tools/private/3dba4f8a2dfca9ddee79
+シリーズの他の記事: https://qiita.com/zundamon-tools/items/3dba4f8a2dfca9ddee79

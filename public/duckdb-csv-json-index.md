@@ -1,19 +1,17 @@
 ---
-title: DuckDB で CSV と JSON を扱う：取り込まずに SQL で読む・集計する・読めない CSV を直す
+title: 'DuckDB で CSV と JSON を扱う：取り込まずに SQL で読む・集計する・読めない CSV を直す'
 tags:
-  - duckdb
+  - DuckDB
   - SQL
   - CSV
   - JSON
   - Parquet
-private: true
+private: false
 updated_at: '2026-11-18T14:10:02+09:00'
 id: 3dba4f8a2dfca9ddee79
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB で手元の CSV と JSON を、表を作らず取り込みもせずに SQL で扱う方法を、課題ごとに4本の記事で紹介します。どれも同じサンプルのスクリプトで作ったデータで、コマンドと出力をそのまま載せています。
@@ -22,13 +20,13 @@ DuckDB で手元の CSV と JSON を、表を作らず取り込みもせずに S
 
 ## 記事の一覧
 
-- 「CSV と JSON の JOIN」https://qiita.com/zundamon-tools/private/dd2c93034ba11461eb7e
+- 「CSV と JSON の JOIN」https://qiita.com/zundamon-tools/items/dd2c93034ba11461eb7e
   1本の CSV、`*` でまとめた複数の CSV、JSON の配列と入れ子を読み、CSV と JSON を `JOIN` する
-- 「集計を短く書く」https://qiita.com/zundamon-tools/private/595748af201e33f3973f
+- 「集計を短く書く」https://qiita.com/zundamon-tools/items/595748af201e33f3973f
   `SUMMARIZE` で全列の型と欠けを見て、`GROUP BY ALL` と `PIVOT` で短く集計する
-- 「CSV を Parquet 1本にする」https://qiita.com/zundamon-tools/private/c1518d2d65dae8f7fe94
+- 「CSV を Parquet 1本にする」https://qiita.com/zundamon-tools/items/c1518d2d65dae8f7fe94
   複数の CSV を `COPY ... (FORMAT parquet, COMPRESSION zstd)` で1本の Parquet にまとめる
-- 「Shift_JIS・N/A を読む」https://qiita.com/zundamon-tools/private/e42c799a5d89996f1ce4
+- 「Shift_JIS・N/A を読む」https://qiita.com/zundamon-tools/items/e42c799a5d89996f1ce4
   Shift_JIS の CSV を `encodings` 拡張で読み、「N/A」「未定」が混じった数字の列を `nullstr` で直す
 
 ## 4本でやったこと
