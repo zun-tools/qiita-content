@@ -1,17 +1,19 @@
 ---
-title: 'DuckDB で CSV と JSON を扱う：取り込まずに SQL で読む・集計する・読めない CSV を直す'
+title: DuckDB で CSV と JSON を扱う：取り込まずに SQL で読む・集計する・読めない CSV を直す
 tags:
-  - DuckDB
+  - duckdb
   - SQL
   - CSV
   - JSON
   - Parquet
 private: true
-updated_at: '2026-11-18T13:03:22+09:00'
+updated_at: '2026-11-18T14:10:02+09:00'
 id: 3dba4f8a2dfca9ddee79
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 DuckDB で手元の CSV と JSON を、表を作らず取り込みもせずに SQL で扱う方法を、課題ごとに4本の記事で紹介します。どれも同じサンプルのスクリプトで作ったデータで、コマンドと出力をそのまま載せています。
