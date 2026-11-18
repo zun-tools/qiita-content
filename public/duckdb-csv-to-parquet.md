@@ -1,7 +1,7 @@
 ---
-title: DuckDB で複数の CSV を Parquet 1本にする（COPY・zstd）
+title: 'DuckDB で複数の CSV を Parquet 1本にする（COPY・zstd）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - Parquet
   - SQL
@@ -11,8 +11,6 @@ id: c1518d2d65dae8f7fe94
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB の `COPY` 文を使うと、複数の CSV ファイルを zstd で圧縮した Parquet 1本にまとめて書き出せます。同じ集計を何度も回すときに、読み込むファイルの数と容量を減らせます。
@@ -109,7 +107,7 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ## 参考動画
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iSwRUF_RQkU" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 
 ---
 

@@ -1,7 +1,7 @@
 ---
-title: DuckDB で CSV の集計を短く書く（SUMMARIZE・GROUP BY ALL・PIVOT）
+title: 'DuckDB で CSV の集計を短く書く（SUMMARIZE・GROUP BY ALL・PIVOT）'
 tags:
-  - duckdb
+  - DuckDB
   - SQL
   - CSV
 private: true
@@ -10,8 +10,6 @@ id: 595748af201e33f3973f
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB の独自の構文を使うと、初めて見る CSV の中身の確認から、月×カテゴリの集計表づくりまでを短い SQL で書けます。`SUMMARIZE` で全列の型と欠けを1回で見て、`GROUP BY ALL` と `PIVOT` でまとめます。
@@ -150,7 +148,7 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ## 参考動画
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iSwRUF_RQkU" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 
 ---
 
