@@ -1,7 +1,7 @@
 ---
-title: DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）
+title: 'DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - SQL
   - 文字コード
@@ -12,13 +12,11 @@ id: e42c799a5d89996f1ce4
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読めるようになります。数字の列に「N/A」や「未定」が混じって `sum` が通らない CSV も、前処理のスクリプト無しに SQL だけで集計できます。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+参考動画は記事の最後に紹介しています。
 
 ## 環境
 
@@ -174,6 +172,10 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 - [CSV の読み込み（encoding・nullstr・columns）](https://duckdb.org/docs/2.0/data/csv/overview.html)
 - [encodings 拡張](https://duckdb.org/docs/2.0/core_extensions/encodings.html)
 - [サンプル: zun-tools/duckdb-sample（gen_sample.py・queries.sql）](https://github.com/zun-tools/duckdb-sample)
+
+## 参考動画
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 
 ---
 

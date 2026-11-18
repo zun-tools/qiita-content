@@ -1,23 +1,20 @@
 ---
-title: DuckDB で CSV の集計を短く書く（SUMMARIZE・GROUP BY ALL・PIVOT）
+title: 'DuckDB で CSV の集計を短く書く（SUMMARIZE・GROUP BY ALL・PIVOT）'
 tags:
-  - duckdb
+  - DuckDB
   - SQL
   - CSV
-  - Parquet
 private: true
 updated_at: '2026-11-18T13:02:53+09:00'
 id: 595748af201e33f3973f
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
-DuckDB の独自の構文を使うと、初めて見る CSV の中身の確認から、月×カテゴリの集計表づくりまでを短い SQL で書けます。`SUMMARIZE` で全列の型と欠けを1回で見て、`GROUP BY ALL` と `PIVOT` でまとめ、最後に繰り返し使う CSV を Parquet 1本にして残します。
+DuckDB の独自の構文を使うと、初めて見る CSV の中身の確認から、月×カテゴリの集計表づくりまでを短い SQL で書けます。`SUMMARIZE` で全列の型と欠けを1回で見て、`GROUP BY ALL` と `PIVOT` でまとめます。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+参考動画は記事の最後に紹介しています。
 
 ## 環境
 
@@ -25,7 +22,6 @@ DuckDB の独自の構文を使うと、初めて見る CSV の中身の確認�
 - macOS（Apple シリコン）
 - 確認日は 2026-11-14。Linux と Windows では試していません
 - サンプルデータの生成に Python 3（標準ライブラリだけ）
-- Parquet の縮み方はデータによって変わります
 
 ## 完成形
 
@@ -133,33 +129,6 @@ ORDER BY month;
 
 `ON` に横へ並べる列、`USING` に升目に入れる集計を書き、`GROUP BY` に書いた `month` が1行ずつの行になります。`FROM 'sales_2026_*.csv'` の `*` は、一致するファイルを全部まとめて1つの表として読む書き方です。
 
-## 6. 繰り返し集計する CSV を Parquet 1本にする
-
-同じ見比べを何度もするなら、CSV 3本を1本にまとめて残しておくと扱いやすくなります。Parquet は、列ごとにまとめて圧縮して保存するファイル形式です。
-
-```sql
-COPY (FROM 'sales_2026_*.csv')
-  TO 'sales_all.parquet' (FORMAT parquet, COMPRESSION zstd);
-```
-
-成功しても何も表示されません。CSV の9列をそのまま、zstd で圧縮して書き出しています（指定しないときの既定は Snappy）。大きさは、対話の画面から `.shell` でシェルのコマンドを走らせて確かめられます。
-
-```sql
-.shell ls -lh sales_2026_*.csv sales_all.parquet
-```
-
-![ターミナルの画面。.shell ls -lh の出力4行。sales_2026_01.csv から sales_2026_03.csv がそれぞれ 174K、sales_all.parquet が 66K](https://raw.githubusercontent.com/zun-tools/qiita-content/main/images/duckdb-groupby-all-pivot/duckdb-parquet-size.png)
-*CSV は 174K が3本、Parquet は 66K の1本*
-
-174K が3本で約522KB、Parquet は 66KB の1本になり、このデータでは約8分の1です。中身が変わっていないかは、両方に同じ集計を当てて確かめます。
-
-```sql
-SELECT count(*), sum(amount) FROM 'sales_all.parquet';
-SELECT count(*), sum(amount) FROM 'sales_2026_*.csv';
-```
-
-どちらも 6,000 行・513,894,610 で一致しました。変えた後も、`FROM 'sales_all.parquet'` と書けば、ここまでの `SUMMARIZE`・`GROUP BY ALL`・`PIVOT` を同じ書き方で当てられます。
-
 ## DuckDB について
 
 DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの中で動く分析用のデータベースです。`FROM` の後ろに CSV・JSON・Parquet のファイル名を書けば、表の定義も取り込みの手順も無しに読めます。
@@ -169,15 +138,17 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 - 初めて見る CSV には `SUMMARIZE` を当て、`column_type` で数字の列が数字として読まれているか、欠けがどれだけあるかを先に見る
 - `GROUP BY ALL` なら、まとめる列を `SELECT` から推論してくれる
 - `PIVOT ... ON 列 USING 集計` で、縦に長い集計を見比べやすい表に回せる
-- 繰り返し使う CSV は `COPY ... (FORMAT parquet)` で1本にでき、このデータでは 522KB が 66KB になり、件数と合計は一致した
 
 ## 参考リンク
 
 - [Friendly SQL](https://duckdb.org/docs/2.0/sql/dialect/friendly_sql.html)
 - [SUMMARIZE](https://duckdb.org/docs/2.0/guides/meta/summarize.html)
 - [PIVOT](https://duckdb.org/docs/2.0/sql/statements/pivot.html)
-- [Parquet（COPY・圧縮の既定）](https://duckdb.org/docs/2.0/data/parquet/overview.html)
 - [サンプル: zun-tools/duckdb-sample（gen_sample.py・queries.sql）](https://github.com/zun-tools/duckdb-sample)
+
+## 参考動画
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 
 ---
 

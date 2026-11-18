@@ -1,7 +1,7 @@
 ---
-title: DuckDB で CSV と JSON を取り込まずに SQL で読み、JOIN する
+title: 'DuckDB で CSV と JSON を取り込まずに SQL で読み、JOIN する'
 tags:
-  - duckdb
+  - DuckDB
   - SQL
   - CSV
   - JSON
@@ -11,13 +11,11 @@ id: dd2c93034ba11461eb7e
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB を使うと、手元の CSV と JSON を `CREATE TABLE` も取り込みもせずに、`FROM` にファイル名を書くだけで SQL で読めます。月ごとに分かれた CSV 3本（計 6,000 行）と商品一覧の JSON を、1本の SQL でつないで集計するところまで進めます。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+参考動画は記事の最後に紹介しています。
 
 ## 環境
 
@@ -183,6 +181,10 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 - [複数ファイルを読む（glob）](https://duckdb.org/docs/2.0/data/multiple_files/overview.html)
 - [JSON を読む](https://duckdb.org/docs/2.0/data/json/overview.html)
 - [サンプル: zun-tools/duckdb-sample（gen_sample.py・queries.sql）](https://github.com/zun-tools/duckdb-sample)
+
+## 参考動画
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C-XYBog9rM4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 
 ---
 
