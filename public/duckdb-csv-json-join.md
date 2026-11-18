@@ -6,7 +6,7 @@ tags:
   - CSV
   - JSON
 private: true
-updated_at: '2026-11-18T06:43:31+09:00'
+updated_at: '2026-11-18T13:02:53+09:00'
 id: dd2c93034ba11461eb7e
 organization_url_name: null
 slide: false

@@ -7,7 +7,7 @@ tags:
   - JSON
   - Parquet
 private: true
-updated_at: '2026-11-18T06:43:32+09:00'
+updated_at: '2026-11-18T13:02:53+09:00'
 id: 3dba4f8a2dfca9ddee79
 organization_url_name: null
 slide: false
