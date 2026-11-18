@@ -1,5 +1,5 @@
 ---
-title: 'lazydocker で docker compose の落ちたコンテナを直す（r で直らなければ R → recreate）'
+title: lazydocker で docker compose の落ちたコンテナを直す（r で直らなければ R → recreate）
 tags:
   - lazydocker
   - Docker
@@ -7,11 +7,13 @@ tags:
   - Rails
   - PostgreSQL
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-19T07:27:26+09:00'
+id: 3834b64259d4b101cd22
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 `docker compose up -d` で「Started」と出たのにブラウザでつながらないとき、lazydocker を開くと、どのサービスが落ちてログに何が出たかを1画面で読めます。compose.yml を直した後は、`r`（restart）ではなく `R` → recreate でコンテナを作り直すと、直した設定が入ります。

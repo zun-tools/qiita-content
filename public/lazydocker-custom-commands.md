@@ -1,5 +1,5 @@
 ---
-title: 'lazydocker の customCommands で長い docker compose exec をメニューから呼ぶ'
+title: lazydocker の customCommands で長い docker compose exec をメニューから呼ぶ
 tags:
   - lazydocker
   - Docker
@@ -7,11 +7,13 @@ tags:
   - Rails
   - PostgreSQL
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-19T07:27:26+09:00'
+id: e92d6b5d31c884fdd368
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 `docker compose exec web bin/rails db:migrate` のような長いコマンドを、lazydocker の設定ファイルの `customCommands` に登録すると、サービスを選んで `c` を押したメニューから走らせられます。`serviceNames` で、コマンドを出すサービスも絞れます。
