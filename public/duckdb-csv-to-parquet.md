@@ -10,7 +10,7 @@ updated_at: '2026-11-18T14:10:02+09:00'
 id: c1518d2d65dae8f7fe94
 organization_url_name: null
 slide: false
-ignorePublish: false
+ignorePublish: true
 ---
 
 DuckDB の `COPY` 文を使うと、複数の CSV ファイルを zstd で圧縮した Parquet 1本にまとめて書き出せます。同じ集計を何度も回すときに、読み込むファイルの数と容量を減らせます。
