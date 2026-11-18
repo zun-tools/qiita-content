@@ -7,11 +7,11 @@ tags:
   - JSON
   - Parquet
 private: false
-updated_at: '2026-11-18T14:10:02+09:00'
+updated_at: '2026-11-19T07:24:46+09:00'
 id: 3dba4f8a2dfca9ddee79
 organization_url_name: null
 slide: false
-ignorePublish: true
+ignorePublish: false
 ---
 
 DuckDB で手元の CSV と JSON を、表を作らず取り込みもせずに SQL で扱う方法を、課題ごとに4本の記事で紹介します。どれも同じサンプルのスクリプトで作ったデータで、コマンドと出力をそのまま載せています。

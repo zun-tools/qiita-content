@@ -6,11 +6,11 @@ tags:
   - CSV
   - JSON
 private: false
-updated_at: '2026-11-18T14:10:02+09:00'
+updated_at: '2026-11-19T07:25:04+09:00'
 id: dd2c93034ba11461eb7e
 organization_url_name: null
 slide: false
-ignorePublish: true
+ignorePublish: false
 ---
 
 DuckDB を使うと、手元の CSV と JSON を `CREATE TABLE` も取り込みもせずに、`FROM` にファイル名を書くだけで SQL で読めます。月ごとに分かれた CSV 3本（計 6,000 行）と商品一覧の JSON を、1本の SQL でつないで集計するところまで進めます。
