@@ -7,7 +7,7 @@ tags:
   - Rails
   - PostgreSQL
 private: true
-updated_at: '2026-11-19T07:27:26+09:00'
+updated_at: '2026-11-19T07:27:54+09:00'
 id: 3834b64259d4b101cd22
 organization_url_name: null
 slide: false
