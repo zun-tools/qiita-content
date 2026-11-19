@@ -1,16 +1,18 @@
 ---
-title: 'lazydocker の使い方：docker compose の落ちたコンテナを直す・長いコマンドを登録する・困ったときのキー'
+title: lazydocker の使い方：docker compose の落ちたコンテナを直す・長いコマンドを登録する・困ったときのキー
 tags:
   - lazydocker
   - Docker
   - docker-compose
-  - TUI
+  - tui
 private: true
-updated_at: '2026-11-19T07:28:21+09:00'
+updated_at: '2026-11-19T09:35:28+09:00'
 id: 975c61779740d6113fd7
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 lazydocker で docker compose の開発環境を扱う方法を、課題ごとに2本の記事にしました。この記事は入口として、インストールと画面構成、困ったときのキーの早見表を載せています。
