@@ -1,7 +1,7 @@
 ---
-title: DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）
+title: 'DuckDB で Shift_JIS の CSV や「N/A」混じりの列を読む（encodings・nullstr）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - SQL
   - 文字コード
@@ -12,11 +12,11 @@ id: e42c799a5d89996f1ce4
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
-DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読めるようになります。数字の列に「N/A」や「未定」が混じって `sum` が通らない CSV も、前処理のスクリプト無しに SQL だけで集計できます。
+DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読めるようになります。数値列に「N/A」や「未定」が混じって `sum` が通らない CSV も、前処理のスクリプト無しに SQL だけで集計できます。
+
+日本語版 Windows の Excel で「CSV（コンマ区切り）」として保存した CSV は、文字コードが Shift_JIS です。DuckDB は既定で CSV を UTF-8 として読むので、そのままでは開けません。
 
 参考動画は記事の最後に紹介しています。
 
@@ -34,11 +34,16 @@ DuckDB で `This file is not utf-8 encoded` と出る Shift_JIS の CSV を読�
 INSTALL encodings; LOAD encodings;
 FROM read_csv('sales_sjis.csv', encoding = 'shift_jis');
 
--- 数字の列に「N/A」「未定」が混じった CSV を、数字の列として読む
+-- 数値列に「N/A」「未定」が混じった CSV を、数値列として読む
 FROM read_csv('sales_corrupted.csv', nullstr = ['N/A', '未定']);
 ```
 
-ファイル名と、空とみなす文字（`'N/A'` と `'未定'`）を手元の CSV に合わせて書き換えれば使えます。
+ファイル名と、`NULL` とみなす文字列（`'N/A'` と `'未定'`）を手元の CSV に合わせて書き換えてください。
+
+:::note alert
+`encodings` 拡張は、自動ロードが既定のままでも一度 `INSTALL` するまで使えません。`encoding = 'shift_jis'` を付けただけでは通りません。
+数値のはずの列も、100 行のうち2行に文字が混じっただけで列ごと `VARCHAR` に推論されます。
+:::
 
 ## 1. DuckDB を入れて、サンプルのデータを作る
 
@@ -59,13 +64,13 @@ python3 ../duckdb-sample/gen_sample.py
 duckdb
 ```
 
-Shift_JIS の `sales_sjis.csv`、崩れた列を持つ `sales_corrupted.csv` などができます。最後の `duckdb` で対話の画面に入り、プロンプトが `D` になります。以降の SQL はこの中で打ちます。
+Shift_JIS の `sales_sjis.csv` や、数値列に文字が混じった `sales_corrupted.csv` ができます。最後の `duckdb` で対話シェルが起動し、プロンプトが `D` に変わります。以降の SQL はこの中で打ちます。
 
 ## 2. Shift_JIS の CSV を読む
 
 ### そのまま読むと「not utf-8 encoded」
 
-DuckDB は `FROM` の後ろにファイル名をそのまま書くと、その CSV を読みます。`SELECT *` を省いた書き方で、全列が出ます。区切りや列の型は、中身を見て自動で推論されます。Shift_JIS のファイルでは、ここで止まります。
+`FROM` の後ろにファイル名を書くだけで、DuckDB はその CSV を読みます（`SELECT *` を省いた書き方）。区切り文字と列の型は型推論に任せています。
 
 ```sql
 FROM 'sales_sjis.csv';
@@ -76,11 +81,9 @@ Invalid Input Error: CSV Error on Line: 1
 Invalid unicode (byte sequence mismatch) detected. This file is not utf-8 encoded.
 ```
 
-ファイルが UTF-8 ではない、というエラーです。
-
 ### `encoding` を付けても「does not support the encoding」
 
-`read_csv` の `encoding` で文字コードを指定しても、拡張が無い状態では別のエラーになります。
+`read_csv` の `encoding` で文字コードを指定しても、拡張が無い状態では別のエラーに変わるだけです。
 
 ```sql
 FROM read_csv('sales_sjis.csv', encoding = 'shift_jis');
@@ -95,11 +98,9 @@ The currently supported encodings are:
 *  utf-8
 ```
 
-CSV の読み込みが標準で対応する文字コードは、UTF-8・UTF-16・Latin-1 の3つだけです。DuckDB には、拡張を必要なときに自動で読み込む設定（自動ロード）があります。その設定が既定のままでも、拡張を一度も入れていない状態ではこのエラーになりました。
+CSV リーダー本体が扱える文字コードは、UTF-8・UTF-16・Latin-1 の3つに限られます。Shift_JIS は `encodings` 拡張の担当です。
 
 ### `encodings` 拡張を入れて読む
-
-エラー文が示すとおりに、拡張を入れてから同じ文を打ちます。
 
 ```sql
 INSTALL encodings; LOAD encodings;
@@ -112,13 +113,13 @@ FROM read_csv('sales_sjis.csv', encoding = 'shift_jis');
 | S002 | 静音マウスパッド | 店舗 | 2500 |
 | S003 | 有線LANアダプタ | 法人 | 3800 |
 
-列名も中身も日本語で読め、金額は整数の `int64` になっています。`encodings` は公式の拡張です。`INSTALL` でダウンロードし、`LOAD` でそのセッションに読み込みます。初回はネットにつながっている必要がありますが、登録は要りません。
+`encodings` は公式の拡張です。`INSTALL` でダウンロードし、`LOAD` でそのセッションに読み込みます。初回だけネットワーク接続が要りますが、登録は要りません。
 
-## 3. 数字の列に「N/A」「未定」が混じった CSV を読む
+## 3. 数値列に「N/A」「未定」が混じった CSV を読む
 
-### `SUMMARIZE` で、文字の列になった数字の列を見つける
+### `SUMMARIZE` で、VARCHAR になった数値列を見つける
 
-`sales_corrupted.csv` は 100 行の売上で、単価と金額の列に「N/A」や「未定」が混じっています。DuckDB は CSV の中身を見て列の型を推論するので、文字が1つでも混じった列は文字の列になります。全列の型をまとめて見るには `SUMMARIZE` を当てます。
+`sales_corrupted.csv` は 100 行の売上で、単価と金額の列に「N/A」や「未定」が混じっています。全列の推論結果をまとめて見るなら `SUMMARIZE` です。
 
 ```sql
 SUMMARIZE 'sales_corrupted.csv';
@@ -131,7 +132,7 @@ SUMMARIZE 'sales_corrupted.csv';
 | unit_price | VARCHAR | 12000 | 未定 |
 | amount | VARCHAR | 24000 | 未定 |
 
-`VARCHAR` は文字の列を表します。文字として並べるので、最大が「未定」になっています。`SUMMARIZE` は全部の列について、型・最小・最大・おおよその種類数・平均・分位点・件数・`NULL` の割合を1回で返します。集計の前に当てておけば、数字のはずの列が `VARCHAR` になっていることに先に気づけます。対話の画面に入らず、シェルから `duckdb -c "SUMMARIZE 'ファイル名.csv';"` と打っても使えます。
+max が「未定」なのは、文字列として比べているためです。`SUMMARIZE` は全列の型・最小・最大・おおよその種類数・平均・分位点・件数・`NULL` の割合を1回で返します。集計の前に当てておくと、数値のはずの列が `VARCHAR` になっていても先に気づけます。シェルから直接 `duckdb -c "SUMMARIZE 'ファイル名.csv';"` と打つこともできます。
 
 ### このまま `sum` を取るとエラーになる
 
@@ -143,11 +144,9 @@ SELECT sum(amount) FROM 'sales_corrupted.csv';
 Binder Error: No function matches the given name and argument types 'sum(VARCHAR)'. You might need to add explicit type casts.
 ```
 
-文字の列に使える `sum` が無い、と言われます。
+### `nullstr` に NULL とみなす文字列を渡す
 
-### `nullstr` に空とみなす文字を渡す
-
-`read_csv` の `nullstr` に、`NULL` として扱う文字を並べます。混じっている文字が複数あるときは、このように `[ ]` の中にまとめて渡します。`DESCRIBE` は、列名と型だけを並べる文です。
+`read_csv` の `nullstr` に、`NULL` として扱う文字列を渡します。複数あれば `[ ]` のリストにまとめます。`DESCRIBE` は列名と型だけを返す文です。
 
 ```sql
 DESCRIBE FROM read_csv('sales_corrupted.csv', nullstr = ['N/A', '未定']);
@@ -155,9 +154,9 @@ SELECT count(*) AS rows, sum(amount) AS total
 FROM read_csv('sales_corrupted.csv', nullstr = ['N/A', '未定']);
 ```
 
-`DESCRIBE` で見ると `unit_price` と `amount` が整数の列として読まれ、集計は 100 行・合計 2,352,000 になりました。崩れていたのは 100 行のうち2行で、金額が「N/A」の行と、単価も金額も「未定」の行です。この2行の金額は `NULL` になり、合計には入りません。
+`unit_price` と `amount` は `BIGINT`（上の表の `int64` と同じ型）として読まれ、集計は 100 行・合計 2,352,000 になりました。崩れていたのは 100 行のうち2行で、金額が「N/A」の行と、単価も金額も「未定」の行です。この2行の金額は `NULL` なので、合計には入りません。
 
-このデータは `nullstr` だけで直りました。それで直らない CSV は、`read_csv` の `columns` で列の型も指定します。
+このデータは `nullstr` だけで直りました。それでも型が合わない CSV は、`read_csv` の `columns` で列の型を指定します。
 
 ## DuckDB について
 
@@ -165,9 +164,12 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ## まとめ
 
-- Shift_JIS の CSV は、`encoding = 'shift_jis'` だけでは読めない。`INSTALL encodings; LOAD encodings;` の後なら読める
-- 数字の列に文字が混じると、その列は `VARCHAR` に推論され `sum` が通らない。`SUMMARIZE` で型を見て、`nullstr` に空とみなす文字を渡す
-- `nullstr` で空とみなした値は `NULL` になり、合計に入らない。このサンプルでは 100 行のうち2行がそうなり、合計は 2,352,000 だった
+| 症状 | 対処 |
+|---|---|
+| `This file is not utf-8 encoded` | `INSTALL encodings; LOAD encodings;` の後に `read_csv(..., encoding = 'shift_jis')` |
+| `does not support the encoding: "shift_jis"` | 同上（`INSTALL` を一度も打っていない） |
+| `sum(VARCHAR)` の Binder Error。`SUMMARIZE` で数値のはずの列が `VARCHAR` | `read_csv(..., nullstr = ['N/A', '未定'])` で該当の文字列を `NULL` に |
+| `nullstr` でも型が合わない | `read_csv` の `columns` で列の型を指定 |
 
 ## 参考リンク
 

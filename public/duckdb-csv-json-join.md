@@ -1,7 +1,7 @@
 ---
-title: DuckDB で CSV と JSON を取り込まずに SQL で読み、JOIN する
+title: 'DuckDB で CSV と JSON を取り込まずに SQL で読み、JOIN する'
 tags:
-  - duckdb
+  - DuckDB
   - SQL
   - CSV
   - JSON
@@ -11,11 +11,11 @@ id: dd2c93034ba11461eb7e
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB を使うと、手元の CSV と JSON を `CREATE TABLE` も取り込みもせずに、`FROM` にファイル名を書くだけで SQL で読めます。月ごとに分かれた CSV 3本（計 6,000 行）と商品一覧の JSON を、1本の SQL でつないで集計するところまで進めます。
+
+多くのデータベースでは、CSV に SQL を当てる前にサーバーを用意し、`CREATE TABLE` で表を定義して取り込む手順が要ります。ファイルが月ごとに増えれば、その取り込みも増えた分だけ繰り返すことになります。
 
 参考動画は記事の最後に紹介しています。
 
@@ -39,7 +39,12 @@ GROUP BY p.category, p.name
 ORDER BY total_revenue DESC;
 ```
 
-売上の CSV（`sales_2026_*.csv` に一致する全部）と商品一覧の JSON を、商品 ID でつないでカテゴリ・商品ごとに集計する文です。ファイル名と列名を手元のものに合わせれば、そのまま使えます。
+売上の CSV（`sales_2026_*.csv` に一致する全部）と商品一覧の JSON を商品 ID で JOIN し、カテゴリ・商品ごとに集計します。ファイル名と列名を手元のものに合わせてください。
+
+:::note alert
+`sales_2026_*.csv` の `*` は、後から同じフォルダに置いたファイルにも一致します。4月分を置けば、同じ SQL の結果に4月分が入ります。
+JSON の配列の添字は 1 始まりです。先頭の要素は `tags[1]` です。
+:::
 
 ## 1. DuckDB を入れて、サンプルのデータを作る
 
@@ -60,7 +65,7 @@ python3 ../duckdb-sample/gen_sample.py
 duckdb
 ```
 
-月ごとの売上 `sales_2026_01.csv`〜`sales_2026_03.csv` と、商品一覧の `products.json` などができます。最後の `duckdb` で対話の画面に入り、プロンプトが `D` になります。以降の SQL はこの中で打ちます。
+月ごとの売上 `sales_2026_01.csv`〜`sales_2026_03.csv` と、商品一覧の `products.json` などができます。最後の `duckdb` で対話シェルが起動し、プロンプトが `D` に変わります。以降の SQL はこの中で打ちます。
 
 ## 2. 1本の CSV を読む
 
@@ -81,11 +86,11 @@ SELECT order_id, order_date, product_id, quantity, amount FROM 'sales_2026_01.cs
 └──────────────────┴────────────┴────────────┴──────────┴────────┘
 ```
 
-`FROM` の後ろにファイル名を引用符で書くだけで、表として読めます。列名の下の行が、DuckDB が推論した型です。日付は `date`、数量と金額は整数の `int64` として読まれています。区切りも同じく中身から推論されます。推論が手元の CSV に合わないときは、`read_csv('ファイル名.csv', ...)` の形で読み、`columns` に列の型を指定します。
+`FROM` の後ろにファイル名を引用符で書けば、そのままテーブルとして扱えます。列名の下の行は型推論の結果で、区切り文字も同じく中身から推論されます。推論が手元の CSV に合わないなら、`read_csv('ファイル名.csv', ...)` の形にして `columns` で列の型を指定します。
 
 ## 3. `*` で複数の CSV をまとめて読む
 
-ファイル名の月の部分を `*` にすると、一致するファイルを全部まとめて1つの表として読みます。
+ファイル名の月の部分を `*`（glob）にすると、一致するファイルを全部まとめて1つのテーブルとして読みます。
 
 ```sql
 SELECT count(*) AS total_rows, sum(amount) AS total_sales FROM 'sales_2026_*.csv';
@@ -100,7 +105,7 @@ SELECT count(*) AS total_rows, sum(amount) AS total_sales FROM 'sales_2026_*.csv
 └────────────┴─────────────┘
 ```
 
-3本で 6,000 行・売上合計 513,894,610 になりました。`sales_2026_*.csv` は、名前がこの形のファイルなら何にでも一致します。いまフォルダにあるのが1〜3月の3本なので3か月分になり、4月分を同じフォルダに置けばそれも読まれます。月を絞りたいときは、ファイル名を具体的に書くか、`WHERE` で `order_date` を絞ります。
+いまフォルダにあるのは1〜3月の3本なので、3か月分です。月を絞るなら、ファイル名を具体的に書くか、`WHERE` で `order_date` を絞ります。
 
 ## 4. JSON の配列と入れ子を取り出す
 
@@ -125,7 +130,7 @@ SELECT count(*) AS total_rows, sum(amount) AS total_sales FROM 'sales_2026_*.csv
   },
 ```
 
-JSON も `FROM` に書くだけで読めます。配列は `tags[1]` のように番号で（1始まり）、入れ子は `spec.battery_hours` のように点でつないで取り出します。
+JSON も `FROM` に書けば読めます。配列は `tags[1]` のように添字で、入れ子は `spec.battery_hours` のようにドットでつないで取り出します。
 
 ```sql
 SELECT product_id, name, category, tags[1] AS first_tag, spec.battery_hours AS battery FROM 'products.json';
@@ -139,11 +144,11 @@ SELECT product_id, name, category, tags[1] AS first_tag, spec.battery_hours AS b
 | P004 | ノイズキャンセリングヘッドセット | オーディオ | マイク | NULL |
 | P005 | USB-C デスク用ドック 12-in-1 | アクセサリ | ハブ | NULL |
 
-`battery_hours` を持たない商品（モニターなど）は `NULL` になります。
+モニターなど `spec` に `battery_hours` のキーが無い商品は `NULL` です。
 
 ## 5. CSV と JSON を JOIN する
 
-売上の行には商品 ID しかありません。完成形の文で商品 ID をキーに JSON とつなぐと、行ごとに商品名とカテゴリが付きます。
+売上の行には商品 ID しかありません。商品名とカテゴリは JSON 側にあるので、商品 ID をキーに JOIN します（完成形と同じ文）。
 
 ```sql
 SELECT p.category, p.name,
@@ -164,7 +169,7 @@ ORDER BY total_revenue DESC;
 | PC周辺機器 | メカニカルキーボード 60% | 1263 | 3735 | 54958049 |
 | PC周辺機器 | トラックボールマウス | 1185 | 3489 | 36243370 |
 
-CSV 3本と JSON 1本の計4つのファイルが、貼り合わせ無しで1枚の表になりました。ファイル名に `s` や `p` の別名を付ければ、ふつうの表と同じように `JOIN ... ON` が書けます。`order_count` を足すと 6,000、`total_revenue` を足すと 513,894,610 で、`*` で読んだときの件数・合計と一致します。ここまで、`CREATE TABLE` は一度も打っていません。
+ファイル名に `s` や `p` の別名を付ければ、テーブルと同じ書き方で `JOIN ... ON` が書けます。`order_count` の合計は 6,000、`total_revenue` の合計は 513,894,610 で、`*` で読んだときの件数・合計と一致しました。ここまで `CREATE TABLE` は一度も打っていません。
 
 ## DuckDB について
 
@@ -172,10 +177,13 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ## まとめ
 
-- `FROM 'ファイル名.csv'` で、表を作らずに CSV を読める。型は中身から推論される
-- `FROM 'sales_2026_*.csv'` で一致するファイルを全部まとめて読める。絞るならファイル名か `WHERE` で
-- JSON も `FROM` に書くだけで読め、配列は `tags[1]`、入れ子は `spec.battery_hours` で取り出せる
-- CSV と JSON は、別名を付けてふつうに `JOIN` できる
+| 症状 | 対処 |
+|---|---|
+| CSV に SQL を当てたいが、表を作って取り込むのが手間 | `FROM 'ファイル名.csv'` |
+| 型推論が手元の CSV に合わない | `read_csv('ファイル名.csv', ...)` の `columns` で型を指定 |
+| 月ごとに分かれた CSV をまとめて集計したい | `FROM 'sales_2026_*.csv'`。絞るならファイル名か `WHERE` |
+| JSON の配列・入れ子の値が要る | `tags[1]`・`spec.battery_hours` |
+| CSV に ID しかなく、名前やカテゴリは JSON 側にある | 別名を付けて `JOIN 'products.json' p ON ...` |
 
 ## 参考リンク
 

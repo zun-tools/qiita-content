@@ -1,7 +1,7 @@
 ---
-title: DuckDB で複数の CSV を Parquet 1本にする（COPY・zstd）
+title: 'DuckDB で複数の CSV を Parquet 1本にする（COPY・zstd）'
 tags:
-  - duckdb
+  - DuckDB
   - CSV
   - Parquet
   - SQL
@@ -11,11 +11,11 @@ id: c1518d2d65dae8f7fe94
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 DuckDB の `COPY` 文を使うと、複数の CSV ファイルを zstd で圧縮した Parquet 1本にまとめて書き出せます。同じ集計を何度も回すときに、読み込むファイルの数と容量を減らせます。
+
+月ごとに追記していく CSV は、ファイルの本数も容量も増える一方です。CSV はテキストなので、集計のたびに文字列から数値や日付への変換をやり直すことにもなります。
 
 参考動画は記事の最後に紹介しています。
 
@@ -34,7 +34,12 @@ COPY (FROM 'sales_2026_*.csv')
   TO 'sales_all.parquet' (FORMAT parquet, COMPRESSION zstd);
 ```
 
-複数の CSV をそのまま 1本の Parquet ファイルへ書き出す文です。ファイル名を手元のものに合わせれば使えます。
+`sales_2026_*.csv` に一致する CSV を、列はそのままで Parquet ファイル1本に書き出します。ファイル名を手元のものに合わせてください。
+
+:::note alert
+`COPY` は成功しても何も表示しません。
+`COMPRESSION` を省くと、圧縮は zstd ではなく既定の Snappy になります。
+:::
 
 ## 1. DuckDB を入れて、サンプルのデータを作る
 
@@ -55,22 +60,22 @@ python3 ../duckdb-sample/gen_sample.py
 duckdb
 ```
 
-月ごとの売上 `sales_2026_01.csv`〜`sales_2026_03.csv`（計 6,000 行）などができます。最後の `duckdb` で対話の画面に入り、プロンプトが `D` になります。以降の SQL はこの中で打ちます。
+月ごとの売上 `sales_2026_01.csv`〜`sales_2026_03.csv`（計 6,000 行）などができます。最後の `duckdb` で対話シェルが起動し、プロンプトが `D` に変わります。以降の SQL はこの中で打ちます。
 
 ## 2. `COPY` で Parquet 1本に書き出す
 
-Parquet は、列ごとにまとめて圧縮して保存するファイル形式です。`FROM 'sales_2026_*.csv'` の `*` は、一致するファイルを全部まとめて1つの表として読む書き方です。
+`FROM 'sales_2026_*.csv'` の `*` は glob で、一致するファイルを全部まとめて1つのテーブルとして読みます。そのクエリ結果を `COPY ... TO` で Parquet に書き出します。
 
 ```sql
 COPY (FROM 'sales_2026_*.csv')
   TO 'sales_all.parquet' (FORMAT parquet, COMPRESSION zstd);
 ```
 
-成功しても何も表示されません。CSV の9列をそのまま、zstd で圧縮して書き出しています（指定しないときの既定は Snappy）。
+CSV の9列には手を付けず、そのまま書き出しています。
 
 ## 3. ファイルの大きさを確かめる
 
-大きさは、対話の画面から `.shell` でシェルのコマンドを走らせて確かめられます。
+対話シェルからは、`.shell` でシェルのコマンドを実行できます。
 
 ```sql
 .shell ls -lh sales_2026_*.csv sales_all.parquet
@@ -79,18 +84,18 @@ COPY (FROM 'sales_2026_*.csv')
 ![ターミナルの画面。.shell ls -lh の出力4行。sales_2026_01.csv から sales_2026_03.csv がそれぞれ 174K、sales_all.parquet が 66K](https://raw.githubusercontent.com/zun-tools/qiita-content/main/images/duckdb-csv-to-parquet/duckdb-parquet-size.png)
 *CSV は 174K が3本、Parquet は 66K の1本*
 
-174K が3本で約522KB、Parquet は 66KB の1本になり、このデータでは約8分の1です。
+CSV 3本の合計は約522KB、Parquet は 66KB の1本です。このデータでは約8分の1になりました。
 
 ## 4. 件数と合計が CSV と一致するか確かめる
 
-中身が変わっていないかは、両方に同じ集計を当てて確かめます。
+中身が変わっていないかは、両方に同じ集計を当てて比べます。
 
 ```sql
 SELECT count(*), sum(amount) FROM 'sales_all.parquet';
 SELECT count(*), sum(amount) FROM 'sales_2026_*.csv';
 ```
 
-どちらも 6,000 行・513,894,610 で一致しました。変えた後も、`FROM 'sales_all.parquet'` と書けば、CSV と同じ書き方で集計できます。
+どちらも 6,000 行・513,894,610 で一致しました。以降は `FROM 'sales_all.parquet'` と書くだけで、CSV と同じ書き方で集計できます。
 
 ## DuckDB について
 
@@ -98,9 +103,10 @@ DuckDB はサーバーを持たず、`duckdb` と打ったそのプロセスの�
 
 ## まとめ
 
-- 繰り返し使う CSV は `COPY ... (FORMAT parquet, COMPRESSION zstd)` で1本の Parquet に書き出せる
-- このデータでは 174K が3本（約522KB）から 66KB（約8分の1）になり、件数（6,000 行）と合計（513,894,610）は一致した
-- 書き出した後は `FROM 'sales_all.parquet'` でそのまま集計できる
+| 症状 | 対処 |
+|---|---|
+| 月ごとの CSV が増え、本数と容量がかさむ | `COPY (FROM 'sales_2026_*.csv') TO 'sales_all.parquet' (FORMAT parquet, COMPRESSION zstd);` |
+| 書き出した Parquet の中身が CSV と同じか不安 | 両方に `SELECT count(*), sum(amount)` を当てて比べる |
 
 ## 参考リンク
 

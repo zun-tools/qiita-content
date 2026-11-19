@@ -1,5 +1,5 @@
 ---
-title: lazydocker の customCommands で長い docker compose exec をメニューから呼ぶ
+title: 'lazydocker の customCommands で長い docker compose exec をメニューから呼ぶ'
 tags:
   - lazydocker
   - Docker
@@ -12,11 +12,11 @@ id: e92d6b5d31c884fdd368
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 `docker compose exec web bin/rails db:migrate` のような長いコマンドを、lazydocker の設定ファイルの `customCommands` に登録すると、サービスを選んで `c` を押したメニューから走らせられます。`serviceNames` で、コマンドを出すサービスも絞れます。
+
+Rails を compose で動かしていると、マイグレーションやコンソールのたびに `docker compose exec web bin/rails …` を打つことになります。lazydocker の Services のキーで直接開けるのはシェル（`E`）までで、決まったコマンドを走らせるには設定で登録する必要があります。
 
 参考動画は記事の最後に紹介しています。
 
@@ -49,7 +49,7 @@ customCommands:
       serviceNames: [db]
 ```
 
-設定ファイルの場所は OS ごとに決まっています。
+設定ファイルの場所:
 
 | OS | 場所 |
 |---|---|
@@ -57,13 +57,17 @@ customCommands:
 | Linux | `~/.config/lazydocker/config.yml` |
 | Windows | `%AppData%\lazydocker\config.yml` |
 
-サンプルの `lazydocker/config.yml` はこれと同じ中身なので、上の場所の設定ファイルへ写せば書き写す手間を省けます。手元のプロジェクトに合わせて書き換えるのは、`serviceNames` のサービス名と、`exec` の後ろのコマンドの2か所です。保存したら、lazydocker を一度閉じて開き直します。
+サンプルの `lazydocker/config.yml` は上の YAML と同じ中身なので、そのまま設定ファイルへ写せます。手元のプロジェクトに合わせて書き換えるのは、`serviceNames` のサービス名と `exec` の後ろのコマンドの2か所です。
+
+:::note alert
+設定を保存しても、lazydocker を開き直すまで `c` のメニューには出ません。コマンドごとにキーを割り当てる欄も無く、呼び出しは `c` のメニューからだけです。
+:::
 
 ## 1. サンプルを立てる
 
-lazydocker は、Mac なら公式の README の手順どおり `brew install lazydocker` で入ります。ほかの OS の入れ方は README の Installation の節にあります。lazydocker の README は、要件を Docker 29.0.0 以上としています。
+lazydocker は、Mac なら公式の README にある `brew install lazydocker` で入ります。ほかの OS の入れ方は README の Installation の節にまとまっています。要件は、README では Docker 29.0.0 以上です。
 
-練習には、Rails の web と Postgres の db を `docker compose` で立てるサンプルを使います。サンプルの `compose.yml` は接続先をわざと間違えた版なので、直した版の `compose.fixed.yml` で置き換えてから立てます。
+サンプルは Rails（web）と Postgres（db）の compose 構成です。`compose.yml` は DB の接続先をわざと間違えた版なので、修正済みの `compose.fixed.yml` で置き換えてから起動します。
 
 ```bash
 git clone https://github.com/zun-tools/lazydocker-sample.git memo-app
@@ -72,19 +76,19 @@ cp compose.fixed.yml compose.yml
 docker compose up -d
 ```
 
-フォルダ名を `memo-app` にしておくと、画面に出る名前がこの記事と同じになります。この時点で `http://localhost:3000/` を開くと、Rails のエラー画面に `Migrations are pending.`（マイグレーションがまだ）と出ます。この状態から、マイグレーションをメニューで流します。
+ディレクトリ名を `memo-app` にすると、compose のプロジェクト名がこの記事の出力と揃います。この時点の `http://localhost:3000/` は `Migrations are pending.` のエラー画面なので、マイグレーションをメニューから流すところまで進めます。
 
 ## 2. lazydocker から設定ファイルを開く
 
-同じフォルダで `lazydocker` と打ち、`1` で Project のパネルへ移って `e` を押します。設定ファイルがエディタで開きます。開くエディタは環境変数 `$VISUAL`、無ければ `$EDITOR` で決まり、どちらも無ければ vi です。
+同じディレクトリで `lazydocker` を起動し、`1` で Project パネルへ移って `e` を押すと、設定ファイルがエディタで開きます。エディタは `$VISUAL`、次に `$EDITOR` の順で決まり、どちらも無ければ vi です。
 
-設定ファイルを初めて開いたときは、中身は空でした。ここに完成形の `customCommands` を書いて保存し、エディタを閉じます。閉じると次の行が出るので、`enter` で lazydocker の画面へ戻ります。
+初回の設定ファイルは空でした。完成形の `customCommands` を書いて保存し、エディタを閉じると次の行が出ます。`enter` で lazydocker に戻ります。
 
 ```text
 Press enter to return to lazydocker (this prompt can be disabled in your config by setting `gui.returnImmediately: true`)
 ```
 
-文にあるとおり、設定で `gui.returnImmediately: true` にすると、この確認を省けます。
+この確認は `gui.returnImmediately: true` で省けます。
 
 ## 3. 各項目の意味
 
@@ -95,19 +99,15 @@ Press enter to return to lazydocker (this prompt can be disabled in your config 
 | `command` | 走らせるコマンド。Go のテンプレートで書ける |
 | `serviceNames` | このコマンドを出すサービス |
 
-`{{ .DockerCompose }}` の既定は `docker compose` です。この環境では、プロジェクト名を付けた `docker compose -p memo-app` に展開されました。`{{ .Service.Name }}` には、選んでいるサービスの名前が入ります。
-
-`customCommands` の下の `services` は、Services のパネルで使うコマンドという意味です。コマンドごとにキーを割り当てる欄は無く、呼ぶのは `c` のメニューからです。
+`{{ .DockerCompose }}` の既定は `docker compose` で、この環境では `docker compose -p memo-app` とプロジェクト名付きで展開されました。`{{ .Service.Name }}` には選択中のサービス名が入ります。`customCommands` の下の `services` は、Services パネル用のコマンドを並べる場所です。
 
 ## 4. 開き直して、`c` で rails db:migrate を流す
 
-保存した直後に web を選んで `c` を押しても、メニューには `cancel` しか出ませんでした。`q` で lazydocker を一度閉じ、もう一度 `lazydocker` と打って開き直します。
-
-`2` で Services へ移り、web を選んで `c` を押すと、web 用に登録した2つだけが出ます。
+保存直後に web で `c` を押しても、メニューは `cancel` だけでした。`q` で終了し、`lazydocker` を起動し直してから `2` で Services へ移り、web で `c` を押すと、web 用の2つだけが出ます。
 
 ![web で c を押したときの Custom Command のメニュー。rails console と rails db:migrate が docker compose -p memo-app exec web bin/ から始まるコマンドと並び、最後に cancel](https://raw.githubusercontent.com/zun-tools/qiita-content/main/images/lazydocker-custom-commands/c02_web_c_menu.png)
 
-このときのメニューは config.yml に書いた順とは逆で、`rails console` が上に並びました。下のキーで `rails db:migrate` を選んで `enter` を押すと、画面がコマンドの出力に切り替わります。
+並びは config.yml に書いた順の逆で、`rails console` が上でした。`rails db:migrate` を選んで `enter` を押すと、画面がコマンドの出力に切り替わります。
 
 ```text
 + docker compose -p memo-app exec web bin/rails db:migrate
@@ -120,11 +120,11 @@ Press enter to return to lazydocker (this prompt can be disabled in your config 
 Press enter to return to lazydocker (this prompt can be disabled in your config by setting `gui.returnImmediately: true`)
 ```
 
-先頭の `+` の行が、実際に走ったコマンドです。`enter` で lazydocker に戻り、ブラウザを開き直すと、メモの一覧の画面が出ました。公式の設定の説明文には `docker-compose` と書いた行もありますが、既定値は `docker compose` なので、`docker-compose` コマンドが無いこの環境でもそのまま通りました。
+`+` の行が、テンプレートを展開した後に実際に走ったコマンドです。`enter` で戻ってブラウザを再読み込みすると、メモの一覧が表示されました。公式の設定の説明文には `docker-compose` と書いた行もありますが、既定値は `docker compose` です。`docker-compose` コマンドが無いこの環境でも、設定を変えずに通りました。
 
 ## 5. 対話するコマンドも同じメニューから開く
 
-`attach: true` にしたコマンドは、対話の画面もそのまま使えます。web で `c` を押して `rails console` を選ぶと、Rails のコンソールが開きます。
+`attach: true` なら、REPL のような対話型のコマンドもそのまま使えます。web で `c` → `rails console`:
 
 ```text
 + docker compose -p memo-app exec web bin/rails console
@@ -136,13 +136,11 @@ memo-app(dev):001> Memo.count
 memo-app(dev):002> exit
 ```
 
-`exit` で抜けると、また `enter` を求める行が出ます。押せば lazydocker の画面に戻ります。
-
-db を選んで `c` を押すと、db 用に登録した `psql` だけが出ます。
+`exit` の後も同じ確認の行が出て、`enter` で lazydocker に戻ります。db で `c` を押すと、db 用の `psql` だけが出ます。
 
 ![db で c を押したときの Custom Command のメニュー。psql と docker compose -p memo-app exec db psql -U postgre までのコマンドの行、その下に cancel](https://raw.githubusercontent.com/zun-tools/qiita-content/main/images/lazydocker-custom-commands/c08_db_c_menu.png)
 
-`psql -U postgres` で入った先は `postgres` のデータベースです。アプリのテーブルを見るには、`\c` でつなぎ替えてから `\dt` を打ちます。
+`psql -U postgres` の接続先は `postgres` データベースです。アプリのテーブルは、`\c memo_development` で切り替えてから `\dt` で見ます。
 
 ```text
 postgres=# \c memo_development
@@ -157,7 +155,7 @@ memo_development=# \dt
 (3 rows)
 ```
 
-`\q` で抜け、`enter` で lazydocker に戻ります。compose.yml にあるパスワードの `postgres` は、このサンプル専用の値です。
+`\q` と `enter` で lazydocker に戻ります。compose.yml のパスワード `postgres` は、このサンプル専用の値です。
 
 ## 6. メニューに出ないときに確かめる2点
 
@@ -166,14 +164,17 @@ memo_development=# \dt
 
 ## lazydocker について
 
-lazydocker は、Docker と docker compose をターミナルの1画面で扱う TUI です。作者は lazygit と同じ Jesse Duffield で、Go で書かれた MIT ライセンスの OSS です。公式の README は、必要な情報を1つの窓に集め、よく使うコマンドをキー1つで呼べて、自分のコマンドも足せる道具だと説明しています。
+Docker と docker compose をターミナルの1画面で扱う TUI です。作者は lazygit と同じ Jesse Duffield で、Go 製・MIT ライセンスの OSS です。README は、必要な情報を1つの窓に集め、よく使うコマンドをキー1つで呼べて、独自のコマンドも足せる道具だと説明しています。
 
 ## まとめ
 
-- 長いコマンドは `customCommands` の `services` に書くと、サービスを選んで `c` のメニューから走らせられる
-- `serviceNames` で、コマンドを出すサービスを絞れる。このサンプルでは web に migrate と console、db に psql を出した
-- `attach: true` なら、rails console や psql の対話の画面もそのまま使える。終わると `enter` で lazydocker に戻る
-- 保存しただけではメニューに出ない。`q` で閉じて開き直す
+| 症状 | 対処 |
+|---|---|
+| `docker compose exec web bin/rails db:migrate` を毎回打っている | `customCommands` の `services` に登録し、サービスを選んで `c` から呼ぶ |
+| 保存したのに `c` のメニューが `cancel` だけ | `q` で終了して lazydocker を開き直す |
+| 開き直してもコマンドが出ない | `serviceNames` が compose.yml のサービス名と一致しているか確かめる |
+| コマンドの後に毎回 `Press enter to return to lazydocker` が出る | `gui.returnImmediately: true` |
+| `psql -U postgres` の接続先が `postgres` データベースになる | `\c memo_development` で切り替えてから `\dt` |
 
 ## 参考リンク
 
