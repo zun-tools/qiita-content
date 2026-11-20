@@ -1,17 +1,19 @@
 ---
-title: '脆弱性スキャンの数千件を KEV・EPSS で絞り、今日直す物だけ毎朝通知する（Grype・DuckDB）'
+title: 脆弱性スキャンの数千件を KEV・EPSS で絞り、今日直す物だけ毎朝通知する（Grype・DuckDB）
 tags:
   - 脆弱性
-  - DuckDB
-  - Grype
-  - EPSS
+  - duckdb
+  - grype
+  - epss
   - SQL
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-21T07:11:17+09:00'
+id: a55222c38b96042182e6
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 Grype の照合結果に、CISA の KEV・FIRST の EPSS・手書きの「外に出ているか」の表を DuckDB でつなぎます。4つの山に振り分けて「今日直す」だけを通知し、残りの山は消さずに末尾へ件数で残します。2回目からは、まだ届けていない組だけが届きます。
