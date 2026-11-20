@@ -1,19 +1,17 @@
 ---
-title: lazydocker の customCommands で長い docker compose exec をメニューから呼ぶ
+title: 'lazydocker の customCommands で長い docker compose exec をメニューから呼ぶ'
 tags:
   - lazydocker
   - Docker
   - docker-compose
   - Rails
   - PostgreSQL
-private: true
-updated_at: '2026-11-19T09:35:28+09:00'
+private: false
+updated_at: '2026-11-20T09:19:42+09:00'
 id: e92d6b5d31c884fdd368
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 `docker compose exec web bin/rails db:migrate` のような長いコマンドを、lazydocker の設定ファイルの `customCommands` に登録すると、サービスを選んで `c` を押したメニューから走らせられます。`serviceNames` で、コマンドを出すサービスも絞れます。
@@ -191,4 +189,4 @@ Docker と docker compose をターミナルの1画面で扱う TUI です。作
 
 ---
 
-シリーズの他の記事: https://qiita.com/zundamon-tools/private/975c61779740d6113fd7
+シリーズの他の記事: https://qiita.com/zundamon-tools/items/975c61779740d6113fd7

@@ -1,18 +1,16 @@
 ---
-title: lazydocker の使い方：docker compose の落ちたコンテナを直す・長いコマンドを登録する・困ったときのキー
+title: 'lazydocker の使い方：docker compose の落ちたコンテナを直す・長いコマンドを登録する・困ったときのキー'
 tags:
   - lazydocker
   - Docker
   - docker-compose
-  - tui
-private: true
-updated_at: '2026-11-19T09:35:28+09:00'
+  - TUI
+private: false
+updated_at: '2026-11-20T09:20:35+09:00'
 id: 975c61779740d6113fd7
 organization_url_name: null
 slide: false
 ignorePublish: false
-posting_campaign_uuid: null
-agreed_posting_campaign_term: false
 ---
 
 lazydocker で docker compose の開発環境を扱う方法を、課題ごとに2本の記事にしました。この記事は入口として、インストールと画面構成、困ったときのキーの早見表を載せています。
@@ -21,9 +19,9 @@ lazydocker で docker compose の開発環境を扱う方法を、課題ごと�
 
 ## 記事の一覧
 
-- 「落ちたコンテナを直す」https://qiita.com/zundamon-tools/private/3834b64259d4b101cd22
+- 「落ちたコンテナを直す」https://qiita.com/zundamon-tools/items/3834b64259d4b101cd22
   落ちたサービスとログを1画面で見つけ、compose.yml を直したら `r` ではなく `R` → recreate で作り直す
-- 「長いコマンドを登録する」https://qiita.com/zundamon-tools/private/e92d6b5d31c884fdd368
+- 「長いコマンドを登録する」https://qiita.com/zundamon-tools/items/e92d6b5d31c884fdd368
   `docker compose exec` で打つ rails db:migrate・rails console・psql を `customCommands` に登録し、`c` のメニューから呼ぶ
 
 どちらも Rails と Postgres のサンプル（[zun-tools/lazydocker-sample](https://github.com/zun-tools/lazydocker-sample)）を使います。手順と出力は、lazydocker v0.25.2・Docker Engine 29.6.1（Linux）で 2026-11-12 に確かめたものです。
