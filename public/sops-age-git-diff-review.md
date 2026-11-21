@@ -1,17 +1,19 @@
 ---
-title: 'SOPS と age で、秘密の設定ファイルを暗号化したまま Git に置いて差分でレビューする（updatekeys でチーム共有）'
+title: SOPS と age で、秘密の設定ファイルを暗号化したまま Git に置いて差分でレビューする（updatekeys でチーム共有）
 tags:
-  - SOPS
+  - sops
   - age
   - Git
   - 暗号化
-  - セキュリティ
+  - Security
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-21T17:53:30+09:00'
+id: e46c9b016e810c7251f2
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 SOPS は YAML の値だけを暗号化します。暗号化したまま Git に置いても、`git diff` に出るのは変えた項目の行と、末尾の `sops:` 欄の `lastmodified`・`mac` だけです。鍵を持つ人は textconv で平文の差分も読めます。チームの鍵は `.sops.yaml` に公開鍵を足し、`sops updatekeys` で共有します。
