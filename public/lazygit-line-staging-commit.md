@@ -6,8 +6,8 @@ tags:
   - tui
   - CLI
   - Terminal
-private: true
-updated_at: '2026-11-21T17:29:24+09:00'
+private: false
+updated_at: '2026-11-21T17:31:18+09:00'
 id: 97f90e5cfbac2444ee1d
 organization_url_name: null
 slide: false
