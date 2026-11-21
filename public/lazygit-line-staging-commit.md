@@ -1,17 +1,19 @@
 ---
-title: 'lazygit で1ファイルに混ざった変更を行ごとに分けてコミットする（a・v・space）'
+title: lazygit で1ファイルに混ざった変更を行ごとに分けてコミットする（a・v・space）
 tags:
   - lazygit
   - Git
-  - TUI
+  - tui
   - CLI
-  - ターミナル
+  - Terminal
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-21T17:29:24+09:00'
+id: 97f90e5cfbac2444ee1d
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 1つのファイルにバグの修正・整形・確認用の `console.log` が混ざっていても、lazygit なら修正と整形を別々のコミットに分けられます。差分の画面で、要る行だけを選んで stage します。使うキーは `enter` → `a` → `v` → `space` → `c` です。
