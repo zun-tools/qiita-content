@@ -291,4 +291,4 @@ Syft と Grype は Anchore の OSS（Apache-2.0）です。Syft が部品一覧�
 
 ## 参考動画
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/XxTwMfcxm_4" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/aFAqJrA-SZs" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
