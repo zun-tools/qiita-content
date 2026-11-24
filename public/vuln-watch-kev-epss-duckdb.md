@@ -6,8 +6,8 @@ tags:
   - grype
   - epss
   - SQL
-private: true
-updated_at: '2026-11-24T13:42:16+09:00'
+private: false
+updated_at: '2026-11-24T14:42:50+09:00'
 id: a55222c38b96042182e6
 organization_url_name: null
 slide: false
