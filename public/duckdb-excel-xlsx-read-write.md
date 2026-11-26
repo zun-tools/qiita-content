@@ -1,17 +1,19 @@
 ---
-title: 'DuckDB で届いた Excel（xlsx）を CSV と突き合わせ、結果を xlsx で返す（read_xlsx・COPY）'
+title: DuckDB で届いた Excel（xlsx）を CSV と突き合わせ、結果を xlsx で返す（read_xlsx・COPY）
 tags:
-  - DuckDB
+  - duckdb
   - SQL
   - Excel
-  - xlsx
+  - XLSX
   - CSV
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-27T07:43:41+09:00'
+id: bb3e4f94d9512464f7a5
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 DuckDB の excel 拡張を使うと、届いた Excel のファイル（xlsx）を `FROM` で読めます。手元の CSV・JSON と1本の SQL で突き合わせ、結果を `COPY` で xlsx に書き出すところまで SQL だけで済みます。上に表題や空行がある xlsx も、`read_xlsx` の `range` で見出しの行から読めます。

@@ -1,16 +1,18 @@
 ---
-title: 'DuckDB UI のノートブックで SQL を書き、結果と列の分布を見る（duckdb -ui）'
+title: DuckDB UI のノートブックで SQL を書き、結果と列の分布を見る（duckdb -ui）
 tags:
-  - DuckDB
+  - duckdb
   - SQL
   - GUI
   - Excel
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-27T07:43:40+09:00'
+id: 3c5dfbd63aa878ba96b6
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 `duckdb -ui` と打つと、DuckDB のノートブックの画面がブラウザに開きます。セルに CLI と同じ SQL を書いて実行し、結果の表と、列ごとのヒストグラム・統計の要約を同じ画面で見られます。
