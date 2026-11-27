@@ -6,8 +6,8 @@ tags:
   - Excel
   - XLSX
   - CSV
-private: true
-updated_at: '2026-11-27T07:43:41+09:00'
+private: false
+updated_at: '2026-11-28T08:48:05+09:00'
 id: bb3e4f94d9512464f7a5
 organization_url_name: null
 slide: false

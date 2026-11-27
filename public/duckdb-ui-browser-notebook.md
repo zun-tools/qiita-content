@@ -5,8 +5,8 @@ tags:
   - SQL
   - GUI
   - Excel
-private: true
-updated_at: '2026-11-27T07:43:40+09:00'
+private: false
+updated_at: '2026-11-28T08:48:30+09:00'
 id: 3c5dfbd63aa878ba96b6
 organization_url_name: null
 slide: false
