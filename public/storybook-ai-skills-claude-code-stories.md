@@ -1,17 +1,19 @@
 ---
-title: 'Storybook 11 beta のスキルと AGENTS.md で、Claude Code が作った画面にストーリーとテストまで書かせる'
+title: Storybook 11 beta のスキルと AGENTS.md で、Claude Code が作った画面にストーリーとテストまで書かせる
 tags:
-  - Storybook
+  - storybook
   - ClaudeCode
   - React
   - AGENTS.md
   - AIエージェント
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-28T18:08:09+09:00'
+id: 6447afe17e6ba9023004
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 Storybook 11 beta には、AI 向けの機能としてスキル7本と AGENTS.md の Storybook 節が入りました。これを入れると、Claude Code は画面を書く前に今あるコンポーネントの説明を引き、作った画面のストーリーと操作のテストまで書いて回します。入れていないプロジェクトに同じ依頼を出したときは、画面のファイル1つだけでした。
