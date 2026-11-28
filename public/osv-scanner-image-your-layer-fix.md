@@ -1,17 +1,19 @@
 ---
-title: 'OSV-Scanner でコンテナを検査し、自分で足した層の脆弱性を直して消えるまで確かめる（scan image・AlmaLinux）'
+title: OSV-Scanner でコンテナを検査し、自分で足した層の脆弱性を直して消えるまで確かめる（scan image・AlmaLinux）
 tags:
-  - OSV-Scanner
+  - osv-scanner
   - Docker
   - 脆弱性
   - AlmaLinux
-  - RPM
+  - rpm
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-28T18:10:30+09:00'
+id: 95279e5271f3a1ba1888
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 OSV-Scanner の `scan image` に `--format vertical` を付けると、検出した脆弱性がベースイメージの層と自分で足した層に分かれて出ます。自分の層の1件から配布元の告知と CVE へ戻り、修正版に替えてその検出が消えるまでを確かめます。
