@@ -1,17 +1,19 @@
 ---
-title: '既存の React アプリに Storybook 11 beta を入れ、コンポーネントのストーリーを Claude Code に書かせる'
+title: 既存の React アプリに Storybook 11 beta を入れ、コンポーネントのストーリーを Claude Code に書かせる
 tags:
-  - Storybook
+  - storybook
   - ClaudeCode
   - React
-  - Vite
+  - vite
   - AIエージェント
 private: true
-updated_at: ''
-id: null
+updated_at: '2026-11-28T18:08:39+09:00'
+id: 2163465cb6cf79862ad1
 organization_url_name: null
 slide: false
 ignorePublish: false
+posting_campaign_uuid: null
+agreed_posting_campaign_term: false
 ---
 
 Storybook の無い React＋Vite のアプリに、`npm create storybook@next` で 11 beta を入れました。続けて Claude Code に storybook-setup スキルを1文で頼むと、既存コンポーネント8つと画面1枚のストーリーが9ファイルできました。テスト31件が通り、アプリのコードは1行も変わっていません。足されたのはストーリーと、`.storybook/preview.tsx` の4行だけです。
